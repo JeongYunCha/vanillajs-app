@@ -1,0 +1,38 @@
+{
+  "name": "vanillajs-app",
+  "version": "1.0.0",
+  "description": "SPA with vanilla JS",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "css-loader": "^5.0.1",
+    "jest": "^26.6.3",
+    "style-loader": "^2.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --hot --mode development",
+    "build": "webpack src/index.js --mode development --output public/bundle.js",
+    "test": "jest --watch"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  }
+}
