@@ -3,8 +3,8 @@ import HomePage from "./pages/HomePage";
 
 export default function App({ $app }) {
   this.state = {
-    spentTime: 0,
-    score: 0,
+    alarms: [],
+    memos: [],
   };
 
   this.setState = (nextState) => {
@@ -54,7 +54,7 @@ export default function App({ $app }) {
           const home = new HomePage({
             $app,
           });
-          home.setState({});
+        // home.setState({});
       }
     };
 
