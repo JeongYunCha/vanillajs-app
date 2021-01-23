@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 
 export default function App({ $app }) {
   this.state = {};
-  console.log(123123, $app);
+
   this.setState = (nextState) => {
     this.state = nextState;
   };
@@ -12,9 +12,9 @@ export default function App({ $app }) {
     // 페이지 초기화
     $app.innerHTML = "";
     // url의 hash를 취득
-    const hash = location.hash.replace("#", "");
+    const path = location.hash.replace("#", "");
 
-    switch (hash) {
+    switch (path) {
       case "alarm":
         new AlarmPage({
           $app,
