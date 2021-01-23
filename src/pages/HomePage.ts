@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "../components/Header";
 
 export default function HomePage({ $app }) {
   this.headerEl = document.createElement("header") as HTMLHeadElement;

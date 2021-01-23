@@ -14,10 +14,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@@/*": ["./*"]
-    },
     "lib": ["ES2020.String", "ESNext.AsyncIterable", "DOM"]
   },
   "exclude": ["node_modules", "dist"]
