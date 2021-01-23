@@ -1,9 +1,10 @@
-export default function AlarmPage($app, defaultUsername) {
+import Header from "../components/Header";
+
+export default function AlarmPage({ $app }) {
+  const ALARM_LOCAL_STORAGE = "alarms";
+
   this.state = {
-    isLoading: false,
-    selectedUsername: defaultUsername,
-    users: [],
-    todos: [],
+    alarms: localStorage.getItem(ALARM_LOCAL_STORAGE) || [],
   };
 
   //   const onSelectUser = async (selectedUsername) => {
@@ -22,21 +23,21 @@ export default function AlarmPage($app, defaultUsername) {
   //     });
   //   };
 
-  const initialize = async () => {
-    this.setState({
-      ...this.state,
-      isLoading: true,
-    });
-    // const users = await fetchUsers();
-    // const todos = await fetchTodos(this.state.selectedUsername);
+  // const initialize = async () => {
+  //   this.setState({
+  //     ...this.state,
+  //     isLoading: true,
+  //   });
+  //   // const users = await fetchUsers();
+  //   // const todos = await fetchTodos(this.state.selectedUsername);
 
-    // this.setState({
-    //   ...this.state,
-    //   todos,
-    //   users,
-    //   isLoading: false,
-    // });
-  };
+  //   // this.setState({
+  //   //   ...this.state,
+  //   //   todos,
+  //   //   users,
+  //   //   isLoading: false,
+  //   // });
+  // };
 
   //   const users = new Users({
   //     $app,
@@ -46,43 +47,43 @@ export default function AlarmPage($app, defaultUsername) {
   //     },
   //   });
 
-  const $content = document.createElement("div");
-  $content.className = "content";
-  $app.appendChild($content);
+  // const $content = document.createElement("div");
+  // $content.className = "content";
+  // $app.appendChild($content);
 
   //   const loading = new Loading({
   //     $app: $content,
   //     initialState: { isLoading: false },
   //   });
 
-  //   const todoInput = new TodoInput({
-  //     $app: $content,
-  //     onSubmit: async (todoText) => {
-  //       if (todoText.length > 0) {
-  //         this.setState({
-  //           ...this.state,
-  //           todos: [
-  //             ...this.state.todos,
-  //             {
-  //               content: todoText,
-  //               isCompleted: false,
-  //             },
-  //           ],
-  //           isLoading: true,
-  //         });
-  //         // 데이터 추가하기
-  //         await createTodo(this.state.selectedUsername, todoText);
+  const header = new Header({
+    $app: $app,
+    // onSubmit: async (todoText) => {
+    //   if (todoText.length > 0) {
+    //     this.setState({
+    //       ...this.state,
+    //       todos: [
+    //         ...this.state.todos,
+    //         {
+    //           content: todoText,
+    //           isCompleted: false,
+    //         },
+    //       ],
+    //       isLoading: true,
+    //     });
+    //     // 데이터 추가하기
+    //     await createTodo(this.state.selectedUsername, todoText);
 
-  //         // 데이터 추가 후 서버에서 목록 다시 불러서 다시 그리기
-  //         const updatedTodos = await fetchTodos(this.state.selectedUsername);
-  //         this.setState({
-  //           ...this.state,
-  //           isLoading: false,
-  //           todos: updatedTodos,
-  //         });
-  //       }
-  //     },
-  //   });
+    //     // 데이터 추가 후 서버에서 목록 다시 불러서 다시 그리기
+    //     const updatedTodos = await fetchTodos(this.state.selectedUsername);
+    //     this.setState({
+    //       ...this.state,
+    //       isLoading: false,
+    //       todos: updatedTodos,
+    //     });
+    //   }
+    // },
+  });
 
   //   const todoList = new TodoList({
   //     $app: $content,
@@ -120,5 +121,5 @@ export default function AlarmPage($app, defaultUsername) {
   //     todoInput.setState({ isLoading: this.state.isLoading });
   //   };
 
-  initialize();
+  // initialize();
 }
