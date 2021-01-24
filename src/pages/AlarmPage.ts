@@ -1,29 +1,30 @@
+import { createComponent } from "../components/Component";
 import Header from "../components/Header";
+import { Page } from "./Page";
 
-export default function AlarmPage({ $app }) {
-  this.headerEl = document.createElement("header") as HTMLHeadElement;
-  this.mainEl = document.createElement("main") as HTMLElement;
-  $app.appendChild(this.headerEl);
-  $app.appendChild(this.mainEl);
+export default class AlarmPage extends Page {
+  private readonly LOCAL_STORAGE = "alarms";
 
-  const ALARM_LOCAL_STORAGE = "alarms";
-  this.state = {
-    alarms: localStorage.getItem(ALARM_LOCAL_STORAGE) || ["13:51:50"],
-  };
+  constructor($app: HTMLDivElement) {
+    super($app);
+    this.state = {
+      alarms: localStorage.getItem(this.LOCAL_STORAGE) || ["13:51:50"],
+    };
 
-  this.components = {
-    header: new Header({
+    createComponent(Header, {
       $target: this.headerEl,
       goBack: () => {},
       addNew: (e: Event) => {
-        console.log(e);
+        this.setState({ alarms: [...this.state.alarms, "13:51:50"] });
       },
-    }),
-  };
+    });
 
-  this.render = () => {
+    this.render();
+  }
+
+  render(): void {
     const children = this.state.alarms
-      .map((item) => {
+      .map((item: string) => {
         return `<li class='flex-container'>
                   <span class='flex-item grow'>${item}</span>
                   <button class='flex-item'>삭제</button>
@@ -33,9 +34,7 @@ export default function AlarmPage({ $app }) {
 
     this.mainEl.innerHTML = `
       <header></header>
-      <ul class="alarm">${children}</ul>
+      <ul class="list-wrapper">${children}</ul>
     `;
-  };
-
-  this.render();
+  }
 }

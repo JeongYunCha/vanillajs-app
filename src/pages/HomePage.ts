@@ -1,28 +1,39 @@
+import { createComponent } from "../components/Component";
 import Header from "../components/Header";
+import { Page } from "./Page";
 
-export default function HomePage({ $app }) {
-  this.headerEl = document.createElement("header") as HTMLHeadElement;
-  this.mainEl = document.createElement("main") as HTMLElement;
-  $app.appendChild(this.headerEl);
-  $app.appendChild(this.mainEl);
+export default class HomePage extends Page {
+  private readonly LOCAL_STORAGE = "home";
+  private readonly appList = {
+    alarm: "알람",
+    memo: "메모",
+    photo: "사진",
+  };
 
-  this.state = {};
+  constructor($app: HTMLDivElement) {
+    super($app);
+    this.state = {
+      home: localStorage.getItem(this.LOCAL_STORAGE) || [
+        "alarm",
+        "memo",
+        "photo",
+      ],
+    };
 
-  this.components = {
-    header: new Header({
+    createComponent(Header, {
       $target: this.headerEl,
-    }),
-  };
+    });
 
-  this.render = () => {
-    this.mainEl.innerHTML = `
-      <ul class='flex-container home'>
-        <li class='flex-item'><a href="#alarm">알람</a></li>
-        <li class='flex-item'><a href="#alarm">메모</a></li>
-        <li class='flex-item'><a href="#alarm">사진</a></li>
-      </ul>
-    `;
-  };
+    this.render();
+  }
 
-  this.render();
+  render(): void {
+    const children = this.state.home
+      .map((item: string) => {
+        return `<li class='flex-item'><a href="#${item}">${this.appList[item]}</a></li>`;
+      })
+      .join("");
+
+    this.mainEl.innerHTML = `<ul class="flex-container home">${children}</ul>`;
+  }
 }

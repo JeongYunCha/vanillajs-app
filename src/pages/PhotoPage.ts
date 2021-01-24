@@ -1,124 +1,37 @@
-export default function PhotoPage($app, defaultUsername) {
-  this.state = {
-    isLoading: false,
-    selectedUsername: defaultUsername,
-    users: [],
-    todos: [],
-  };
+import { createComponent } from "../components/Component";
+import Header from "../components/Header";
+import { Page } from "./Page";
 
-  //   const onSelectUser = async (selectedUsername) => {
-  //     this.setState({
-  //       ...this.state,
-  //       selectedUsername,
-  //       isLoading: true,
-  //     });
+export default class PhotoPage extends Page {
+  private readonly LOCAL_STORAGE = "photos";
 
-  //     const todos = await fetchTodos(this.state.selectedUsername);
+  constructor($app: HTMLDivElement) {
+    super($app);
+    this.state = {
+      photos: localStorage.getItem(this.LOCAL_STORAGE) || ["13:51:50"],
+    };
 
-  //     this.setState({
-  //       ...this.state,
-  //       todos,
-  //       isLoading: false,
-  //     });
-  //   };
-
-  const initialize = async () => {
-    this.setState({
-      ...this.state,
-      isLoading: true,
+    createComponent(Header, {
+      $target: this.headerEl,
+      goBack: () => {},
     });
-    // const users = await fetchUsers();
-    // const todos = await fetchTodos(this.state.selectedUsername);
 
-    // this.setState({
-    //   ...this.state,
-    //   todos,
-    //   users,
-    //   isLoading: false,
-    // });
-  };
+    this.render();
+  }
 
-  //   const users = new Users({
-  //     $app,
-  //     users: this.state.users,
-  //     onClick: (selectedUsername) => {
-  //       onSelectUser(selectedUsername);
-  //     },
-  //   });
+  render(): void {
+    const children = this.state.photos
+      .map((item: string) => {
+        return `<li class='flex-container'>
+                  <span class='flex-item grow'>${item}</span>
+                  <button class='flex-item'>삭제</button>
+                </li>`;
+      })
+      .join("");
 
-  const $content = document.createElement("div");
-  $content.className = "content";
-  $app.appendChild($content);
-
-  //   const loading = new Loading({
-  //     $app: $content,
-  //     initialState: { isLoading: false },
-  //   });
-
-  //   const todoInput = new TodoInput({
-  //     $app: $content,
-  //     onSubmit: async (todoText) => {
-  //       if (todoText.length > 0) {
-  //         this.setState({
-  //           ...this.state,
-  //           todos: [
-  //             ...this.state.todos,
-  //             {
-  //               content: todoText,
-  //               isCompleted: false,
-  //             },
-  //           ],
-  //           isLoading: true,
-  //         });
-  //         // 데이터 추가하기
-  //         await createTodo(this.state.selectedUsername, todoText);
-
-  //         // 데이터 추가 후 서버에서 목록 다시 불러서 다시 그리기
-  //         const updatedTodos = await fetchTodos(this.state.selectedUsername);
-  //         this.setState({
-  //           ...this.state,
-  //           isLoading: false,
-  //           todos: updatedTodos,
-  //         });
-  //       }
-  //     },
-  //   });
-
-  //   const todoList = new TodoList({
-  //     $app: $content,
-  //     initialState: {
-  //       isLoading: false,
-  //       todos: [],
-  //     },
-  //     onClick: async function (id) {
-  //       await toggleTodo(this.state.selectedUsername, id);
-  //       await initialize();
-  //     },
-  //     onRemove: async function (id) {
-  //       await removeTodo(this.state.selectedUsername, id);
-  //       await initialize();
-  //     },
-  //   });
-
-  //   this.setState = (nextState) => {
-  //     this.state = nextState;
-
-  //     loading.setState({
-  //       isLoading: this.state.isLoading,
-  //     });
-
-  //     users.setState({
-  //       users: this.state.users,
-  //     });
-
-  //     todoList.setState({
-  //       isLoading: this.state.isLoading,
-  //       todos: this.state.todos,
-  //       selectedUsername: this.state.selectedUsername,
-  //     });
-
-  //     todoInput.setState({ isLoading: this.state.isLoading });
-  //   };
-
-  initialize();
+    this.mainEl.innerHTML = `
+      <header></header>
+      <ul class="list-wrapper">${children}</ul>
+    `;
+  }
 }

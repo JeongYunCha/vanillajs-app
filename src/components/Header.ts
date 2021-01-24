@@ -1,24 +1,40 @@
-interface IProps {
+import { Component } from "./Component";
+
+interface IArgs {
   $target: HTMLElement;
   goBack?: Function;
   addNew?: Function;
 }
+export default class Header extends Component {
+  private goBack: Function;
+  private addNew: Function;
 
-export default function Header({ $target, goBack, addNew }: IProps) {
-  $target.addEventListener("click", (e: MouseEvent) => {
-    if (e.target["innerHTML"] === "NEW") {
+  constructor({ $target, goBack, addNew }: IArgs) {
+    super();
+    this.state = {};
+    this.goBack = goBack;
+    this.addNew = addNew;
+    this.children = document.createElement("ul");
+    this.children.classList.add("flex-container");
+    $target.appendChild(this.children);
+    $target.addEventListener("click", (e: MouseEvent) => {
       e.stopPropagation();
-      addNew(e);
-    }
-  });
+      if (e.target["innerHTML"] === "NEW") addNew(e);
+      if (e.target["innerHTML"] === "BACK") goBack(e);
+    });
 
-  $target.innerHTML = `
-    <ul class='flex-container'>
-      ${goBack ? `<li class='flex-item btn'><a href='/'>BACK</a></li>` : ""}
-      <li class='flex-item grow'>시계</li>
-      ${
-        addNew ? `<li class='flex-item btn' onclick='${addNew()}'>NEW</li>` : ""
-      }
-    </ul>
-  `;
+    this.render();
+  }
+
+  render(): void {
+    this.children.innerHTML = `
+    ${this.goBack ? `<li class='flex-item btn'><a href='/'>BACK</a></li>` : ""}
+    <li class='flex-item grow'>시계</li>
+    ${
+      this.addNew
+        ? `<li class='flex-item btn' onclick='${this.addNew()}'>NEW</li>`
+        : ""
+    }
+    `;
+  }
 }

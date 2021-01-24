@@ -1,7 +1,13 @@
 import AlarmPage from "./pages/AlarmPage";
 import HomePage from "./pages/HomePage";
+import MemoPage from "./pages/MemoPage";
+import { createPage } from "./pages/Page";
+import PhotoPage from "./pages/PhotoPage";
+interface IProps {
+  $app: HTMLDivElement;
+}
 
-export default function App({ $app }) {
+export default function App({ $app }: IProps) {
   this.state = {};
 
   this.setState = (nextState) => {
@@ -16,24 +22,16 @@ export default function App({ $app }) {
 
     switch (path) {
       case "alarm":
-        new AlarmPage({
-          $app,
-        });
+        createPage(AlarmPage, $app);
         break;
       case "memo":
-        new HomePage({
-          $app,
-        });
+        createPage(MemoPage, $app);
         break;
       case "photo":
-        new HomePage({
-          $app,
-        });
+        createPage(PhotoPage, $app);
         break;
       default:
-        new HomePage({
-          $app,
-        });
+        createPage(HomePage, $app);
     }
   };
 

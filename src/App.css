@@ -53,10 +53,10 @@ header .btn {
   border-radius: 10px;
   margin: 15px;
 }
-.alarm li {
+.list-wrapper li {
   padding: 10px 15px;
   background-color: white;
 }
-.alarm li span {
+.list-wrapper li span {
   justify-content: left !important;
 }
