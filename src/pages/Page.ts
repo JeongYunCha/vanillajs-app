@@ -16,9 +16,10 @@ export abstract class Page {
 
   abstract render(): void;
 
-  setState(nextState: any): void {
+  setState(nextState: any, callback?: Function): void {
     this.state = nextState;
     this.render();
+    if (callback) callback();
   }
 }
 

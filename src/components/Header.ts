@@ -19,8 +19,8 @@ export default class Header extends Component {
     $target.appendChild(this.children);
     $target.addEventListener("click", (e: MouseEvent) => {
       e.stopPropagation();
-      if (e.target["innerHTML"] === "NEW") addNew(e);
-      if (e.target["innerHTML"] === "BACK") goBack(e);
+      if (e.target["innerHTML"] === "NEW") this.addNew();
+      if (e.target["innerHTML"] === "BACK") this.goBack();
     });
 
     this.render();
@@ -28,13 +28,17 @@ export default class Header extends Component {
 
   render(): void {
     this.children.innerHTML = `
-    ${this.goBack ? `<li class='flex-item btn'><a href='/'>BACK</a></li>` : ""}
-    <li class='flex-item grow'>시계</li>
-    ${
-      this.addNew
-        ? `<li class='flex-item btn' onclick='${this.addNew()}'>NEW</li>`
-        : ""
-    }
+      ${
+        this.goBack
+          ? `<li class='flex-item btn'><a href='/'>BACK</a></li>`
+          : `<li class='flex-item btn hidden'></li>`
+      }
+      <li class='flex-item grow'>시계</li>
+      ${
+        this.addNew
+          ? `<li class='flex-item btn'>NEW</li>`
+          : `<li class='flex-item btn hidden'></li>`
+      }
     `;
   }
 }

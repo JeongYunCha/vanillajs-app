@@ -36,12 +36,25 @@ header .btn {
 }
 .flex-item {
   flex-grow: 0;
-  /* align-items: center; */
+}
+.flex-item select {
+  margin: 0 5px;
+  padding: 2px;
+  width: 50px;
 }
 .flex-item.grow {
   flex-grow: 1;
   align-items: center;
   justify-content: center;
+}
+
+div.flex-container,
+.list-wrapper li {
+  padding: 10px 15px;
+  background-color: white;
+}
+.list-wrapper li span {
+  justify-content: left !important;
 }
 
 .home li {
@@ -53,10 +66,7 @@ header .btn {
   border-radius: 10px;
   margin: 15px;
 }
-.list-wrapper li {
-  padding: 10px 15px;
-  background-color: white;
-}
-.list-wrapper li span {
-  justify-content: left !important;
+
+.hidden {
+  visibility: hidden;
 }
