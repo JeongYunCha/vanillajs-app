@@ -11,12 +11,13 @@ export default class AlarmPage extends Page {
     super($app);
     this.registerEl = document.createElement("div");
     this.resultListEl = document.createElement("ul");
-    this.registerEl.classList.add("hidden", "flex-container");
+    this.registerEl.classList.add("hidden", "flex-container", "alarm");
     this.resultListEl.classList.add("list-wrapper");
     this.mainEl.appendChild(this.registerEl);
     this.mainEl.appendChild(this.resultListEl);
+
     this.state = {
-      alarms: localStorage.getItem(this.LOCAL_STORAGE).split(",") || [],
+      alarms: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)) || [],
     };
 
     this.mainEl.addEventListener("click", (e: MouseEvent) => {
@@ -28,7 +29,6 @@ export default class AlarmPage extends Page {
         const minute = document.getElementById("minute") as HTMLSelectElement;
         this.setState(
           {
-            ...this.state,
             alarms: [
               ...this.state.alarms,
               `${type.options[type.selectedIndex].value} ${
@@ -36,7 +36,11 @@ export default class AlarmPage extends Page {
               }시 ${minute.options[minute.selectedIndex].value}분`,
             ],
           },
-          () => localStorage.setItem(this.LOCAL_STORAGE, this.state.alarms)
+          () =>
+            localStorage.setItem(
+              this.LOCAL_STORAGE,
+              JSON.stringify(this.state.alarms)
+            )
         );
         this.registerEl.classList.add("hidden");
       }
@@ -44,12 +48,15 @@ export default class AlarmPage extends Page {
       if (e.target["innerText"] === "삭제") {
         this.setState(
           {
-            ...this.state,
             alarms: this.state.alarms.filter(
               (item: string, idx: number) => idx !== Number(e.target["id"])
             ),
           },
-          () => localStorage.setItem(this.LOCAL_STORAGE, this.state.alarms)
+          () =>
+            localStorage.setItem(
+              this.LOCAL_STORAGE,
+              JSON.stringify(this.state.alarms)
+            )
         );
       }
     });

@@ -4,22 +4,48 @@ import { Page } from "./Page";
 
 export default class MemoPage extends Page {
   private readonly LOCAL_STORAGE = "memos";
+  protected registerEl: HTMLDivElement;
+  protected resultListEl: HTMLUListElement;
 
   constructor($app: HTMLDivElement) {
     super($app);
+    this.registerEl = document.createElement("div");
+    this.resultListEl = document.createElement("ul");
+    this.registerEl.classList.add("hidden", "flex-container");
+    this.resultListEl.classList.add("list-wrapper");
+    this.mainEl.appendChild(this.registerEl);
+    this.mainEl.appendChild(this.resultListEl);
+
     this.state = {
-      memos: localStorage.getItem(this.LOCAL_STORAGE) || [
-        "Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo Memo",
-      ],
+      memos: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)) || [],
     };
+
+    this.registerEl.addEventListener("keyup", (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        const inputEl = document.getElementById("memo") as HTMLSelectElement;
+        this.setState(
+          { memos: [...this.state.memos, { text: inputEl.value }] },
+          () =>
+            localStorage.setItem(
+              this.LOCAL_STORAGE,
+              JSON.stringify(this.state.memos)
+            )
+        );
+        this.registerEl.classList.add("hidden");
+      }
+    });
+
+    this.resultListEl.addEventListener("click", (e: MouseEvent) => {
+      e.stopPropagation();
+      document.getElementById(e.target["id"]).classList.toggle("accordion");
+    });
 
     createComponent(Header, {
       $target: this.headerEl,
       goBack: () => {},
-      addNew: (e: Event) => {
-        this.setState({
-          memos: [...this.state.memos, "Memo Memo Memo Memo Memo Memo Memo"],
-        });
+      addNew: () => {
+        this.registerEl.classList.remove("hidden");
+        document.getElementById("memo").focus();
       },
     });
 
@@ -27,15 +53,13 @@ export default class MemoPage extends Page {
   }
 
   render(): void {
-    const children = this.state.memos
-      .map((item: string) => {
-        return `<li>${item}</li>`;
+    this.registerEl.innerHTML = `
+      <input id="memo" placeholder="메모를 입력하세요"/>
+    `;
+    this.resultListEl.innerHTML = this.state.memos
+      .map((item: string, idx: number) => {
+        return `<li id="${idx}" class="memo-list accordion">${item["text"]}</li>`;
       })
       .join("");
-
-    this.mainEl.innerHTML = `
-      <header></header>
-      <ul class="list-wrapper">${children}</ul>
-    `;
   }
 }
