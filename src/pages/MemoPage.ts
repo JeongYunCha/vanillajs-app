@@ -23,13 +23,11 @@ export default class MemoPage extends Page {
     this.registerEl.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         const inputEl = document.getElementById("memo") as HTMLSelectElement;
-        this.setState(
-          { memos: [...this.state.memos, { text: inputEl.value }] },
-          () =>
-            localStorage.setItem(
-              this.LOCAL_STORAGE,
-              JSON.stringify(this.state.memos)
-            )
+        this.setState({ memos: [...this.state.memos, inputEl.value] }, () =>
+          localStorage.setItem(
+            this.LOCAL_STORAGE,
+            JSON.stringify(this.state.memos)
+          )
         );
         this.registerEl.classList.add("hidden");
       }
@@ -58,7 +56,7 @@ export default class MemoPage extends Page {
     `;
     this.resultListEl.innerHTML = this.state.memos
       .map((item: string, idx: number) => {
-        return `<li id="${idx}" class="memo-list accordion">${item["text"]}</li>`;
+        return `<li id="${idx}" class="memo-list accordion">${item}</li>`;
       })
       .join("");
   }

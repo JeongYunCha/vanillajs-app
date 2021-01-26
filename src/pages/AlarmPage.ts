@@ -31,9 +31,11 @@ export default class AlarmPage extends Page {
           {
             alarms: [
               ...this.state.alarms,
-              `${type.options[type.selectedIndex].value} ${
-                time.options[time.selectedIndex].value
-              }시 ${minute.options[minute.selectedIndex].value}분`,
+              this.parserAlarm(
+                type.options[type.selectedIndex].value,
+                time.options[time.selectedIndex].value,
+                minute.options[minute.selectedIndex].value
+              ),
             ],
           },
           () =>
@@ -107,10 +109,17 @@ export default class AlarmPage extends Page {
     this.resultListEl.innerHTML = this.state.alarms
       .map((item: string, idx: number) => {
         return `<li class='flex-container'>
-                  <span class='flex-item grow'>${item}</span>
+                  <span class='flex-item grow'>${item[1]}</span>
                   <button id=${idx} class='flex-item'>삭제</button>
                 </li>`;
       })
       .join("");
+  }
+
+  parserAlarm(type: string, time: string, minute: string): any {
+    return [
+      `${type === "오전" ? time : Number(time) + 12}:${minute}:00`,
+      `${type} ${time}시 ${minute}분`,
+    ];
   }
 }

@@ -1,4 +1,4 @@
+import { App, createApp } from "./App";
 import "./App.css";
-import App from "./App";
 
-new App({ $app: document.querySelector("#app") });
+createApp(App, document.querySelector("#app"));

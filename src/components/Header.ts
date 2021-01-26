@@ -1,3 +1,4 @@
+import { getDateTime } from "../util";
 import { Component } from "./Component";
 
 interface IArgs {
@@ -33,7 +34,7 @@ export default class Header extends Component {
           ? `<li class='flex-item btn'><a href='/'>BACK</a></li>`
           : `<li class='flex-item btn hidden'></li>`
       }
-      <li class='flex-item grow'>시계</li>
+      <li id="clock" class='flex-item grow'>${getDateTime()}</li>
       ${
         this.addNew
           ? `<li class='flex-item btn'>NEW</li>`
