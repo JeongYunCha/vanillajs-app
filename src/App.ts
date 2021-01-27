@@ -20,7 +20,12 @@ export class App {
   constructor($app: HTMLDivElement) {
     this.rootEl = $app;
     this.alarms = new Map(JSON.parse(localStorage.getItem("alarms")) || []);
-
+    window.addEventListener("beforeunload", function (event) {
+      console.log("I am the 1st one.");
+    });
+    window.addEventListener("unload", function (event) {
+      console.log("I am the 3rd one.");
+    });
     setInterval(() => {
       // Header: 날짜와 시간이 표시
       document.querySelector("#clock").innerHTML = getDateTime();
@@ -39,7 +44,7 @@ export class App {
     window.addEventListener("hashchange", this.render);
     // DOMContentLoaded은 HTML과 script가 로드된 시점에 발생하는 이벤트로 load 이벤트보다 먼저 발생
     window.addEventListener("DOMContentLoaded", this.render);
-
+    // window.addEventListener("resize", this.render);
     this.render();
   }
 

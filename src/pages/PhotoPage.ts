@@ -1,6 +1,8 @@
 import { createComponent } from "../components/Component";
 import Header from "../components/Header";
 import { Page } from "./Page";
+import ImageList from "../components/ImageList";
+import ImageView from "../components/ImageView";
 
 export default class PhotoPage extends Page {
   protected photoListEl: HTMLUListElement;
@@ -9,63 +11,49 @@ export default class PhotoPage extends Page {
   constructor($app: HTMLDivElement) {
     super($app);
     this.photoListEl = document.createElement("ul");
-    this.photoListEl.classList.add("photo-list");
-    this.mainEl.appendChild(this.photoListEl);
     this.photoViewEl = document.createElement("div");
-    this.photoViewEl.classList.add("photo-view");
+    this.mainEl.appendChild(this.photoListEl);
     this.mainEl.appendChild(this.photoViewEl);
-    this.state = {
+    this.photoListEl.classList.add("photo-list");
+    this.photoViewEl.classList.add("photo-view");
+    this.photoViewEl.style.height = `${window.innerHeight - 110}px`;
+
+    https: this.state = {
       photos: [
         "01.jpg",
-        "02.gif",
+        "02.jpeg",
         "03.jpg",
-        "04.gif",
+        "04.jpeg",
         "05.jpg",
-        "06.gif",
-        "07.gif",
+        "06.jpg",
+        "07.jpg",
+        "08.jpg",
+        "09.jpg",
+        "10.jpg",
       ],
       selected: 0,
     };
-
-    this.photoListEl.addEventListener("click", (e: MouseEvent) => {
-      e.stopPropagation();
-      if (e.target["className"] === "thumbnail-img") {
-        this.setState({ ...this.state, selected: Number(e.target["id"]) });
-      }
-    });
 
     createComponent(Header, {
       $target: this.headerEl,
       goBack: () => {},
     });
-
     this.render();
   }
 
   render(): void {
-    this.photoListEl.innerHTML = this.state.photos
-      .map((photo: string, idx: number) => {
-        const imageSrc = require(`../assets/${photo}`).default;
-        return `
-          <li key=${idx} class="thumbnail-wrapper ${
-          this.state.selected === idx ? "selected" : ""
-        }" > 
-            <div class="thumbnail"> 
-              <div class="thumbnail-centered"> 
-                <img id="${idx}" src=${String(
-          imageSrc
-        )} alt="${photo}" class="thumbnail-img"/>
-              </div> 
-            </div> 
-          </li>
-        `;
-      })
-      .join("");
-    const selected = this.state.photos[this.state.selected];
-    const selectedSrc = require(`../assets/${selected}`).default;
-
-    this.photoViewEl.innerHTML = `
-      <img src=${String(selectedSrc)} alt="${selected}"/>
-    `;
+    createComponent(ImageList, {
+      $target: this.photoListEl,
+      initialState: this.state,
+      onClick: (id: number) => {
+        this.setState({ ...this.state, selected: id }, () => {
+          this.render();
+        });
+      },
+    });
+    createComponent(ImageView, {
+      $target: this.photoViewEl,
+      initialState: this.state,
+    });
   }
 }
