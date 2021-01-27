@@ -22,7 +22,9 @@ export default class MemoPage extends Page {
 
     this.registerEl.addEventListener("keyup", (e: KeyboardEvent) => {
       if (e.key === "Enter") {
-        const inputEl = document.getElementById("memo") as HTMLSelectElement;
+        const inputEl = document.getElementById(
+          "memo-input"
+        ) as HTMLSelectElement;
         this.setState({ memos: [...this.state.memos, inputEl.value] }, () =>
           localStorage.setItem(
             this.LOCAL_STORAGE,
