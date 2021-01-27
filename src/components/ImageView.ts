@@ -5,50 +5,34 @@ interface IArgs {
   initialState: any;
 }
 export default class ImageView extends Component {
+  protected imageEl: HTMLImageElement;
+
   constructor({ $target, initialState }: IArgs) {
     super();
-    while ($target.hasChildNodes()) {
-      $target.removeChild($target.firstChild);
-    }
+    this.imageEl = new Image();
     this.children = $target;
+    this.children.appendChild(this.imageEl);
+
     this.state = { ...initialState };
 
     this.render();
   }
 
-  render = async () => {
-    let width = await this.loadImage(
-      this.children,
-      this.state.photos[this.state.selected]
-    );
-    if (width > 0) {
-      console.log(
-        this.children.offsetHeight,
-        (this.children.offsetHeight / this.children.offsetWidth) * width
-      );
+  render = () => {
+    const selected = this.state.photos[this.state.selected];
+    this.imageEl.classList.remove("landscape", "portrait");
+    this.imageEl.src = require(`../assets/${selected}`).default;
+    this.imageEl.alt = selected;
+    this.imageEl.onload = () => {
       if (
         this.children.offsetHeight <
-        (this.children.offsetHeight / this.children.offsetWidth) * width
+        (this.children.offsetHeight / this.children.offsetWidth) *
+          this.imageEl.clientWidth
       ) {
-        console.log("넚이에 맞추기");
-        this.children.getElementsByTagName("img")[0].classList.add("portrait");
+        this.imageEl.classList.add("portrait");
       } else {
-        console.log("높이에 맞추기");
-        this.children.getElementsByTagName("img")[0].classList.add("landscape");
+        this.imageEl.classList.add("landscape");
       }
-    }
-    width = null;
+    };
   };
-
-  loadImage($target: HTMLElement, name: string): Promise<any> {
-    return new Promise(function (resolve, reject) {
-      let img = new Image();
-      img.src = require(`../assets/${name}`).default;
-      img.alt = name;
-
-      $target.append(img);
-      img.onload = () => resolve(img.offsetWidth);
-      img.onerror = () => reject(new Error("image load error"));
-    });
-  }
 }

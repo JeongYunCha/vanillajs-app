@@ -18,7 +18,7 @@ export default class PhotoPage extends Page {
     this.photoViewEl.classList.add("photo-view");
     this.photoViewEl.style.height = `${window.innerHeight - 110}px`;
 
-    https: this.state = {
+    this.state = {
       photos: [
         "01.jpg",
         "02.jpeg",
@@ -34,26 +34,29 @@ export default class PhotoPage extends Page {
       selected: 0,
     };
 
-    createComponent(Header, {
-      $target: this.headerEl,
-      goBack: () => {},
-    });
-    this.render();
+    this.component = {
+      header: createComponent(Header, {
+        $target: this.headerEl,
+        goBack: () => {},
+      }),
+      imageList: createComponent(ImageList, {
+        $target: this.photoListEl,
+        initialState: this.state,
+        onClick: (id: number) => {
+          this.setState({ ...this.state, selected: id }, () => {
+            this.render();
+          });
+        },
+      }),
+      imageView: createComponent(ImageView, {
+        $target: this.photoViewEl,
+        initialState: this.state,
+      }),
+    };
   }
 
   render(): void {
-    createComponent(ImageList, {
-      $target: this.photoListEl,
-      initialState: this.state,
-      onClick: (id: number) => {
-        this.setState({ ...this.state, selected: id }, () => {
-          this.render();
-        });
-      },
-    });
-    createComponent(ImageView, {
-      $target: this.photoViewEl,
-      initialState: this.state,
-    });
+    this.component.imageList.setState(this.state);
+    this.component.imageView.setState(this.state);
   }
 }

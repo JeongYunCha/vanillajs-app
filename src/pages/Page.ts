@@ -3,6 +3,7 @@ interface PageConstructor {
 }
 
 export abstract class Page {
+  protected component: any;
   protected headerEl: HTMLHeadElement;
   protected mainEl: HTMLElement;
   protected state: any;
