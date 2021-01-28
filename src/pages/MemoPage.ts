@@ -1,65 +1,61 @@
 import { createComponent } from "../components/Component";
-import Header from "../components/Header";
 import { Page } from "./Page";
+import Header from "../components/Header";
+import InputBox from "../components/InputBox";
+import AccordionList from "../components/AccordionList";
 
 export default class MemoPage extends Page {
   private readonly LOCAL_STORAGE = "memos";
-  protected registerEl: HTMLDivElement;
-  protected resultListEl: HTMLUListElement;
+  protected inputBoxEl: HTMLDivElement;
+  protected memoListEl: HTMLUListElement;
 
   constructor($app: HTMLDivElement) {
     super($app);
-    this.registerEl = document.createElement("div");
-    this.resultListEl = document.createElement("ul");
-    this.registerEl.classList.add("hidden", "flex-container");
-    this.resultListEl.classList.add("list-wrapper");
-    this.mainEl.appendChild(this.registerEl);
-    this.mainEl.appendChild(this.resultListEl);
+    this.inputBoxEl = document.createElement("div");
+    this.inputBoxEl.classList.add("hidden", "flex-container");
+    this.memoListEl = document.createElement("ul");
+    this.memoListEl.classList.add("list-wrapper");
+    this.mainEl.appendChild(this.inputBoxEl);
+    this.mainEl.appendChild(this.memoListEl);
 
     this.state = {
-      memos: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)) || [],
+      memos: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)),
     };
 
-    this.registerEl.addEventListener("keyup", (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        const inputEl = document.getElementById(
-          "memo-input"
-        ) as HTMLSelectElement;
-        this.setState({ memos: [...this.state.memos, inputEl.value] }, () =>
-          localStorage.setItem(
-            this.LOCAL_STORAGE,
-            JSON.stringify(this.state.memos)
-          )
-        );
-        this.registerEl.classList.add("hidden");
-      }
-    });
-
-    this.resultListEl.addEventListener("click", (e: MouseEvent) => {
-      e.stopPropagation();
-      document.getElementById(e.target["id"]).classList.toggle("accordion");
-    });
-
-    createComponent(Header, {
-      $target: this.headerEl,
-      goBack: () => {},
-      addNew: () => {
-        this.registerEl.classList.remove("hidden");
-        document.getElementById("memo").focus();
-      },
-    });
+    this.component = {
+      header: createComponent(Header, {
+        $target: this.headerEl,
+        goBack: () => {},
+        addNew: () => {
+          this.inputBoxEl.classList.remove("hidden");
+          document.getElementById("memo-input").focus();
+        },
+      }),
+      inputBox: createComponent(InputBox, {
+        $target: this.inputBoxEl,
+        onEnterKeyUp: (value: string) => {
+          this.setState({ memos: [...this.state.memos, value] }, () =>
+            localStorage.setItem(
+              this.LOCAL_STORAGE,
+              JSON.stringify(this.state.memos)
+            )
+          );
+          this.inputBoxEl.classList.add("hidden");
+        },
+      }),
+      memoList: createComponent(AccordionList, {
+        $target: this.memoListEl,
+        initialState: this.state,
+        onClick: (id: string) => {
+          document.getElementById(id).classList.toggle("accordion");
+        },
+      }),
+    };
 
     this.render();
   }
 
   render(): void {
-    this.registerEl.innerHTML = `
-      <input id="memo" placeholder="메모를 입력하세요"/>
-    `;
-    this.resultListEl.innerHTML = this.state.memos
-      .map((item: string, idx: number) => {
-        return `<li id="${idx}" class="memo-list accordion">${item}</li>`;
-      })
-      .join("");
+    this.component.memoList.setState(this.state);
   }
 }

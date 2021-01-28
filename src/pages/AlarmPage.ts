@@ -1,3 +1,4 @@
+import { parserAlarm } from "../util";
 import { createComponent } from "../components/Component";
 import Header from "../components/Header";
 import { Page } from "./Page";
@@ -17,7 +18,7 @@ export default class AlarmPage extends Page {
     this.mainEl.appendChild(this.resultListEl);
 
     this.state = {
-      alarms: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)) || [],
+      alarms: JSON.parse(localStorage.getItem(this.LOCAL_STORAGE)),
     };
 
     this.mainEl.addEventListener("click", (e: MouseEvent) => {
@@ -31,7 +32,7 @@ export default class AlarmPage extends Page {
           {
             alarms: [
               ...this.state.alarms,
-              this.parserAlarm(
+              parserAlarm(
                 type.options[type.selectedIndex].value,
                 time.options[time.selectedIndex].value,
                 minute.options[minute.selectedIndex].value
@@ -114,12 +115,5 @@ export default class AlarmPage extends Page {
                 </li>`;
       })
       .join("");
-  }
-
-  parserAlarm(type: string, time: string, minute: string): any {
-    return [
-      `${type === "오전" ? time : Number(time) + 12}:${minute}:00`,
-      `${type} ${time}시 ${minute}분`,
-    ];
   }
 }

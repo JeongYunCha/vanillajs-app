@@ -91,7 +91,6 @@ export default class HomePage extends Page {
       .forEach((el: HTMLElement, idx: number) => {
         const rect = el.getBoundingClientRect();
         if (
-          // appList[`${idx}`].id !== target.id &&
           rect.x < targetRect.x &&
           rect.x + rect.width > targetRect.x &&
           rect.y < targetRect.y &&
