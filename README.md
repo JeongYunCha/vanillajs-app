@@ -1,7 +1,5 @@
 # SPA with vanilla JS
 
-[Live App]()
-
 ---
 
 ### 프로젝트 실행
