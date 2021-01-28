@@ -1,6 +1,6 @@
 import { createComponent } from "../components/Component";
-import Header from "../components/Header";
 import { Page } from "./Page";
+import Header from "../components/Header";
 import ImageList from "../components/ImageList";
 import ImageView from "../components/ImageView";
 

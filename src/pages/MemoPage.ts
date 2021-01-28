@@ -12,8 +12,8 @@ export default class MemoPage extends Page {
   constructor($app: HTMLDivElement) {
     super($app);
     this.inputBoxEl = document.createElement("div");
-    this.inputBoxEl.classList.add("hidden", "flex-container");
     this.memoListEl = document.createElement("ul");
+    this.inputBoxEl.classList.add("hidden", "flex-container");
     this.memoListEl.classList.add("list-wrapper");
     this.mainEl.appendChild(this.inputBoxEl);
     this.mainEl.appendChild(this.memoListEl);
@@ -51,8 +51,6 @@ export default class MemoPage extends Page {
         },
       }),
     };
-
-    this.render();
   }
 
   render(): void {
