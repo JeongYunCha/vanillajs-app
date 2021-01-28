@@ -5,13 +5,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --hot --mode development",
     "start": "webpack-dev-server --mode development --config webpack.config.js --open",
-    "build": "webpack src/index.ts --mode development --output public/bundle.js"
+    "build": "webpack src/index.ts --mode development --output public/bundle.js",
+    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build"
   },
   "devDependencies": {
     "css-loader": "^5.0.1",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.1.0",
     "image-webpack-loader": "^7.0.1",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.1",
@@ -21,16 +23,5 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
-  }
+  "homepage": "https://jeongyuncha.github.io/bucketplace-app"
 }

@@ -4,6 +4,7 @@ import "./App.css";
 
 createApp(App, document.querySelector("#app"));
 
+// 앱 최초 실행시 로컬스토리지에 샘플 데이터 넣기
 if (!localStorage.getItem("home")) {
   localStorage.setItem(
     "home",

@@ -1,22 +1,43 @@
 # SPA with vanilla JS
 
+[Live App]()
+
+---
+
+### 프로젝트 실행
+
+```bash
+$ npm install
+$ npm start
 ```
-modern-environment-practice/
-├── dist
-│   ├── index.html
-│   └── main.js
+
+### 프로젝트 모듈(파일) 구조
+
+```
+vanillajs-app/
 ├── node_modules
-│   └── ((content omitted for brevity))
-├── package-lock.json
-├── package.json
+├── public
+│   ├── bundle.js
+│   └── index.html
 ├── src
 │   ├── assets
-│   │   └── images
-│   │       └── stock-puppy-photo.jpg
-│   ├── index.html
-│   ├── index.js
-│   └── sass
-│       └── styles.scss
-├── webpack.config.js
-└── .gitignore
+│   │   └── (...이미지 파일)
+│   ├── components
+│   │   ├── Component.ts -> abstract class
+│   │   └── (...컴포넌트 파일)
+│   ├── pages
+│   │   ├── Page.ts ------> abstract class
+│   │   ├── HomePage.ts
+│   │   ├── AlarmPage.ts
+│   │   ├── MemoPage.ts
+│   │   └── PhotoPage.ts
+│   ├── App.css
+│   ├── App.ts
+│   ├── index.ts ---------> entry file
+│   └── util.ts
+├── .gitignore
+├── package-lock.json
+├── package.json
+├── tsconfig.json
+└── webpack.config.js
 ```
